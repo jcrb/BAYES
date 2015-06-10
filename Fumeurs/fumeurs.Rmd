@@ -1,0 +1,55 @@
+---
+title: "Tabac et cancer"
+author: "jcb"
+date: "30 mai 2015"
+output: html_document
+---
+
+Probabilité d'avoir un cancer chez les fumeurs. Echantillon de 60 personnes: __data/fumeurs.csv__:
+
+- fumeur: oui = 1
+- cancer: oui = 1
+
+```{r}
+file <- "../data/fumeurs.csv"
+d <- read.csv(file)
+names(d)
+str(d)
+apply(d, 2, sum)
+
+pF = sum(d$FUMEUR / nrow(d)) # prior prob. de fumer
+pC = sum(d$CANCER / nrow(d)) # prior prob. de développer un cancer
+
+pF
+pC
+
+pFetC <- nrow(d[d$F == "1" & d$C == "1",])/nrow(d) # prob. conditionnelle d'avoir simultannément un cancer ET d'être fumeur
+
+pCsiF <- pFetC/pF
+pFsiC <- pFetC/pC
+
+# théorème de Bayes
+# bayes = postérior probability
+# pC = prior probability
+# pF permet de normaliser le résultat mais peut être ignoré pour le raisonnement
+# pFsiC = likelihood F given the hypothesis C (le risque pour F d'avoir C)
+bayes <- pFsiC * pC / pF
+# Probabilité de développer un cancer si on est fumeur
+bayes
+```
+
+Avec la fonction naiveBayes
+---------------------------
+
+```{r}
+library("e1071", lib.loc="/Library/Frameworks/R.framework/Versions/3.1/Resources/library")
+model <- naiveBayes(FUMEUR ~ ., data = d)
+model
+
+model$apriori
+model$tables
+model$levels
+model$call
+
+```
+
