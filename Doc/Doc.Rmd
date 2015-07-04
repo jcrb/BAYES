@@ -1,0 +1,11 @@
+---
+title: "Bayes documentation"
+author: "jcb"
+date: "4 juillet 2015"
+output: html_document
+---
+
+Sources
+=======
+
+- [1] Jim Albert. Bayesian computation with R.Springer 2009 (Bib. JcB)
